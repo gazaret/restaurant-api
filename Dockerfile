@@ -1,6 +1,7 @@
 FROM node:14
 
-WORKDIR /app/restaurant-api
+RUN mkdir -p /usr/src/restaurant-api
+WORKDIR /usr/src/restaurant-api
 
 COPY . .
 

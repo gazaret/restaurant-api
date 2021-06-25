@@ -1,0 +1,15 @@
+application:
+  name: restaurant-api
+  project: restaurant-api
+  organization: QoveryCommunity
+  publicly_accessible: true
+databases:
+  - type: POSTGRESQL
+    name: restaurant-db
+    version: 11
+routers:
+  - name: main-restaurant-api
+    routes:
+      - application_name: restaurant-api
+        paths:
+          - /*
