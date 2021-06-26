@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  database:
+    image: "postgres:11"
+    environment:
+      - POSTGRES_USER=local_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+      - POSTGRES_PORT=5432
+    ports:
+      - 5432:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+volumes:
+  database-data:

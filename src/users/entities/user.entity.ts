@@ -1,15 +1,17 @@
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Roles } from '../../auth/constants';
 
+@Entity()
 export class UserEntity {
+  @PrimaryGeneratedColumn()
   id: number;
-  username: string;
-  password: string;
-  role: Roles;
 
-  constructor(id: number, username: string, password: string, role: Roles) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.role = role;
-  }
+  @Column()
+  username: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  role: Roles;
 }

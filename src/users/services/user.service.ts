@@ -5,38 +5,30 @@ import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {
-    const params = {
-      id: userRepository.getCount() + 1,
-      username: 'admin',
-      password: '$2b$10$GiAX2qU/hLItcS03/cpPEuH5XoiZK.MaeLfh38bYY0hy4RUf8Y7lm',
-      role: Roles.ADMIN,
-    };
-    const adminUser = new UserEntity(
-      params.id,
-      params.username,
-      params.password,
-      params.role,
-    );
+  constructor(private userRepository: UserRepository) {}
 
-    userRepository.save(adminUser);
+  async findOne(username: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ username });
   }
 
-  findOne(username: string): UserEntity {
-    return this.userRepository.getByUsername(username);
-  }
+  async create(
+    username: string,
+    password: string,
+    role: Roles,
+  ): Promise<UserEntity> {
+    const isExist = await this.userRepository.findAndCount({ username });
 
-  create(username: string, password: string, role: Roles): UserEntity {
-    const isExist = this.userRepository.checkExistenceByUsername(username);
-
-    if (isExist) {
+    if (isExist[1]) {
       throw new UnprocessableEntityException('This username already exist');
     }
 
-    const id = this.userRepository.getCount() + 1;
-    const user = new UserEntity(id, username, password, role);
+    const user = new UserEntity();
 
-    this.userRepository.save(user);
+    user.username = username;
+    user.password = password;
+    user.role = role;
+
+    await this.userRepository.save(user);
 
     return user;
   }

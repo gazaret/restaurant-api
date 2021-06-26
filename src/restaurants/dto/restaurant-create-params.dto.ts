@@ -1,22 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class SigninParamsDto {
+export class RestaurantCreateParamsDto {
   @ApiProperty({
     required: true,
     type: 'string',
-    name: 'username',
+    name: 'name',
   })
   @IsNotEmpty()
   @IsString()
-  username: string;
+  name: string;
 
   @ApiProperty({
     required: true,
     type: 'string',
-    name: 'password',
+    name: 'description',
   })
   @IsNotEmpty()
   @IsString()
-  password: string;
+  description: string;
+
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    name: 'imageData',
+  })
+  @IsNotEmpty()
+  @IsString()
+  imageData: string;
 }

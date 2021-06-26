@@ -29,7 +29,7 @@ export class AuthService {
     password: string,
   ): Promise<UserPublicDTO | null> {
     try {
-      const user = this.userService.findOne(username);
+      const user = await this.userService.findOne(username);
 
       const isMatch = await bcrypt.compare(password, user.password);
 
@@ -54,7 +54,11 @@ export class AuthService {
     const hashPassword = await bcrypt.hash(data.password, saltOrRounds);
     const role = data.isRestaurantOwner ? Roles.OWNER : Roles.USER;
 
-    const user = this.userService.create(data.username, hashPassword, role);
+    const user = await this.userService.create(
+      data.username,
+      hashPassword,
+      role,
+    );
 
     const token = this.signToken(user);
 
