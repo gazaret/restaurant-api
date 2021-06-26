@@ -1,12 +1,9 @@
-export type SigninDTO = {
-  userId: number;
-  username: string;
-  accessToken: string;
-};
+import { Roles } from './constants';
 
 export type TokenPayload = {
   userId: number;
   username: string;
+  role: Roles;
   exp: number;
   iat: number;
 };

@@ -1,30 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from '../../users/users.service';
-import { UserDTO, User } from '../../users/types';
-import { SigninDTO } from '../types';
+import { UserService } from '../../users/services/user.service';
+import { UserEntity } from '../../users/entities/user.entity';
+import { UserPublicDTO } from '../../users/dto/user-public.dto';
+import { SigninResponseDto, SignupParamsDto, SignupResponseDto } from '../dto';
+import { Roles } from '../constants';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
+
+  private signToken(user: UserEntity): string {
+    const payload = {
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+    };
+
+    return this.jwtService.sign(payload);
+  }
 
   async validateUser(
     username: string,
     password: string,
-  ): Promise<UserDTO | null> {
+  ): Promise<UserPublicDTO | null> {
     try {
-      const user = await this.userService.findOne(username);
+      const user = this.userService.findOne(username);
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (isMatch) {
-        const { password, ...rest } = user;
-
-        return rest;
+        return new UserPublicDTO(user.id, user.username, user.role);
       }
 
       return null;
@@ -33,17 +43,21 @@ export class AuthService {
     }
   }
 
-  signin(user: User): SigninDTO {
-    const payload = {
-      userId: user.id,
-      username: user.username,
-    };
+  signin(user: UserEntity): SigninResponseDto {
+    const token = this.signToken(user);
 
-    const token = this.jwtService.sign(payload);
+    return new SigninResponseDto(user.id, user.username, token, user.role);
+  }
 
-    return {
-      accessToken: token,
-      ...payload,
-    };
+  async signup(data: SignupParamsDto): Promise<SignupResponseDto> {
+    const saltOrRounds = 10;
+    const hashPassword = await bcrypt.hash(data.password, saltOrRounds);
+    const role = data.isRestaurantOwner ? Roles.OWNER : Roles.USER;
+
+    const user = this.userService.create(data.username, hashPassword, role);
+
+    const token = this.signToken(user);
+
+    return new SignupResponseDto(user.id, user.username, token, user.role);
   }
 }

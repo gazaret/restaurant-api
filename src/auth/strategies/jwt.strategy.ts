@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserDTO } from '../../users/types';
+import { UserPublicDTO } from '../../users/dto/user-public.dto';
 import { ConfigEnvironment } from '../../types';
 import { TokenPayload } from '../types';
 
@@ -16,10 +16,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(tokenPayload: TokenPayload): UserDTO {
+  validate(tokenPayload: TokenPayload): UserPublicDTO {
     return {
       id: tokenPayload.userId,
       username: tokenPayload.username,
+      role: tokenPayload.role,
     };
   }
 }
