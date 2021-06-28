@@ -10,7 +10,11 @@ import {
 import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { RestaurantsService } from '../services/restaurants.service';
 import { RestaurantEntity } from '../entities/restaurant.entity';
-import { RestaurantCreateParamsDto } from '../dto';
+import {
+  RestaurantCreateParamsDto,
+  RestaurantDetailResponseDto,
+  RestaurantsListResponseDTO,
+} from '../dto';
 
 @Controller('restaurants')
 @ApiTags('Restaurants')
@@ -19,7 +23,7 @@ export class RestaurantsController {
 
   @Get()
   @ApiBearerAuth()
-  @ApiResponse({ type: RestaurantEntity, isArray: true, status: 200 })
+  @ApiResponse({ type: RestaurantsListResponseDTO, isArray: true, status: 200 })
   getRestaurants() {
     return this.restaurantsService.getAll();
   }
@@ -33,7 +37,7 @@ export class RestaurantsController {
 
   @Get(':id')
   @ApiBearerAuth()
-  @ApiResponse({ type: RestaurantEntity, status: 200 })
+  @ApiResponse({ type: RestaurantDetailResponseDto, status: 200 })
   getRestaurant(@Param() params) {
     return this.restaurantsService.getById(params.id);
   }
