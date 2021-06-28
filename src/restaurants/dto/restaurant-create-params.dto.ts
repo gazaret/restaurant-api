@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class RestaurantCreateParamsDto {
   @ApiProperty({
@@ -9,6 +9,7 @@ export class RestaurantCreateParamsDto {
   })
   @IsNotEmpty()
   @IsString()
+  @MaxLength(100)
   name: string;
 
   @ApiProperty({
@@ -18,6 +19,7 @@ export class RestaurantCreateParamsDto {
   })
   @IsNotEmpty()
   @IsString()
+  @MaxLength(1000)
   description: string;
 
   @ApiProperty({

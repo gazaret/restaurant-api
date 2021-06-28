@@ -1,15 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { ReviewEntity } from './review.entity';
+import { ReviewEntity } from '../entities/review.entity';
 
-@Entity()
-export class RestaurantEntity {
+export class RestaurantDetailResponseDto {
   @ApiProperty({
     required: true,
     type: 'number',
     name: 'id',
   })
-  @PrimaryGeneratedColumn()
   id: number;
 
   @ApiProperty({
@@ -17,7 +14,6 @@ export class RestaurantEntity {
     type: 'string',
     name: 'name',
   })
-  @Column()
   name: string;
 
   @ApiProperty({
@@ -25,7 +21,6 @@ export class RestaurantEntity {
     type: 'string',
     name: 'description',
   })
-  @Column()
   description: string;
 
   @ApiProperty({
@@ -34,9 +29,24 @@ export class RestaurantEntity {
     name: 'imageData',
     description: 'Restaurant image',
   })
-  @Column()
   imageData: string;
 
-  @OneToMany((type) => ReviewEntity, (reviews) => reviews.restaurant)
+  @ApiProperty({
+    required: true,
+    type: ReviewEntity,
+    name: 'reviews',
+  })
   reviews: ReviewEntity[];
+
+  constructor(
+    id: number,
+    name: string,
+    imageData: string,
+    reviews: ReviewEntity[],
+  ) {
+    this.id = id;
+    this.name = name;
+    this.imageData = imageData;
+    this.reviews = reviews;
+  }
 }
