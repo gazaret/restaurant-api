@@ -2,16 +2,21 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Roles } from '../../auth/constants';
 import { UserRepository } from '../repositories/user.repository';
 import { UserEntity } from '../entities/user.entity';
-import { UserPublicDTO } from '../dto/user-public.dto';
+import { UserPublicDTO, UserUpdateParamsDTO } from '../dto';
+import { UserNotFoundException } from '../errors/user-not-found.exception';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getAll(): Promise<UserPublicDTO[]> {
+  async getAllExceptAdmins(): Promise<UserPublicDTO[]> {
     const users = await this.userRepository.find();
 
-    return users.map((user) => {
+    const usersWithoutAdmins = users.filter(
+      (user) => user.role !== Roles.ADMIN,
+    );
+
+    return usersWithoutAdmins.map((user) => {
       return new UserPublicDTO(user.id, user.username, user.role);
     });
   }
@@ -40,5 +45,33 @@ export class UserService {
     await this.userRepository.save(user);
 
     return user;
+  }
+
+  async update(
+    userId: number,
+    userUpdateData: UserUpdateParamsDTO,
+  ): Promise<UserPublicDTO> {
+    const user = await this.userRepository.findOne({ id: userId });
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    user.username = userUpdateData.username;
+    user.role = userUpdateData.role;
+
+    await this.userRepository.update({ id: userId }, user);
+
+    return new UserPublicDTO(user.id, user.username, user.role);
+  }
+
+  async delete(userId: number): Promise<void> {
+    const user = await this.userRepository.findOne({ id: userId });
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    await this.userRepository.delete({ id: userId });
   }
 }

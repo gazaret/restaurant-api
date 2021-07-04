@@ -2,10 +2,11 @@ import { UnprocessableEntityException } from '@nestjs/common';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { nanoid } from 'nanoid';
+import { existsSync, mkdirSync } from 'fs';
 
 export const multerOptions = {
   limits: {
-    fileSize: +process.env.MAX_FILE_SIZE,
+    fileSize: parseInt(process.env.MAX_FILE_SIZE),
   },
   fileFilter: (req: any, file: any, cb: any) => {
     if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
@@ -24,6 +25,10 @@ export const multerOptions = {
   storage: diskStorage({
     destination: (req: any, file: any, cb: any) => {
       const uploadPath = './photos';
+
+      if (!existsSync(uploadPath)) {
+        mkdirSync(uploadPath);
+      }
 
       cb(null, uploadPath);
     },

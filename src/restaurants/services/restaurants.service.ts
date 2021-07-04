@@ -78,6 +78,7 @@ export class RestaurantsService {
     return new RestaurantDetailResponseDto(
       restaurant.id,
       restaurant.name,
+      restaurant.description,
       restaurant.imageData,
       reviews,
       averageRate,

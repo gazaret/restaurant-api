@@ -56,6 +56,7 @@ export class RestaurantDetailResponseDto {
   constructor(
     id: number,
     name: string,
+    description: string,
     imageData: string,
     reviews: ReviewEntity[],
     averageRate: number,
@@ -63,6 +64,7 @@ export class RestaurantDetailResponseDto {
   ) {
     this.id = id;
     this.name = name;
+    this.description = description;
     this.imageData = imageData;
     this.reviews = reviews;
     this.averageRate = averageRate;

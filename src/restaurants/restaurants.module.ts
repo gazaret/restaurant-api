@@ -22,5 +22,6 @@ import { ReviewEntity } from './entities/review.entity';
   ],
   controllers: [RestaurantsController, ReviewsController],
   providers: [RestaurantsService, ReviewService],
+  exports: [RestaurantsService],
 })
 export class RestaurantsModule {}
