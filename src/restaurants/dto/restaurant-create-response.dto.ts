@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RestaurantsListResponseDTO {
+export class RestaurantCreateResponseDTO {
   @ApiProperty({
     required: true,
     type: 'number',
@@ -26,36 +26,19 @@ export class RestaurantsListResponseDTO {
     required: true,
     type: 'string',
     name: 'imageData',
+    description: 'Restaurant image',
   })
   imageData: string;
-
-  @ApiProperty({
-    required: true,
-    type: 'number',
-    name: 'averageRate',
-  })
-  averageRate: number;
-
-  @ApiProperty({
-    required: true,
-    type: 'number',
-    name: 'unrepliedComments',
-  })
-  unrepliedComments: number;
 
   constructor(
     id: number,
     name: string,
     description: string,
     imageData: string,
-    averageRate: number,
-    unrepliedComments: number,
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.imageData = imageData;
-    this.averageRate = averageRate;
-    this.unrepliedComments = unrepliedComments;
   }
 }

@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
+import { UserEntity } from '../../users/entities/user.entity';
 import { ReviewEntity } from './review.entity';
 
 @Entity()
@@ -34,9 +41,12 @@ export class RestaurantEntity {
     name: 'imageData',
     description: 'Restaurant image',
   })
-  @Column()
+  @Column({ default: null })
   imageData: string;
 
-  @OneToMany((type) => ReviewEntity, (reviews) => reviews.restaurant)
+  @OneToMany(() => ReviewEntity, (review) => review.restaurant)
   reviews: ReviewEntity[];
+
+  @ManyToOne(() => UserEntity, (user) => user.restaurants, { eager: true })
+  user: UserEntity;
 }

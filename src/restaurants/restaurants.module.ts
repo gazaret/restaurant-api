@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { RestaurantsController } from './controllers/restaurants.controller';
 import { ReviewsController } from './controllers/reviews.controller';
 import { RestaurantsService } from './services/restaurants.service';
@@ -17,6 +18,7 @@ import { ReviewEntity } from './entities/review.entity';
       ReviewEntity,
       ReviewRepository,
     ]),
+    ConfigModule,
   ],
   controllers: [RestaurantsController, ReviewsController],
   providers: [RestaurantsService, ReviewService],

@@ -5,8 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ConfigEnvironment } from './types';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
