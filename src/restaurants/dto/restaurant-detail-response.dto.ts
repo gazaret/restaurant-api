@@ -35,18 +35,37 @@ export class RestaurantDetailResponseDto {
     required: true,
     type: ReviewEntity,
     name: 'reviews',
+    isArray: true,
   })
   reviews: ReviewEntity[];
+
+  @ApiProperty({
+    required: true,
+    type: 'number',
+    name: 'averageRate',
+  })
+  averageRate: number;
+
+  @ApiProperty({
+    required: true,
+    type: 'number',
+    name: 'unrepliedComments',
+  })
+  unrepliedComments: number;
 
   constructor(
     id: number,
     name: string,
     imageData: string,
     reviews: ReviewEntity[],
+    averageRate: number,
+    unrepliedComments: number,
   ) {
     this.id = id;
     this.name = name;
     this.imageData = imageData;
     this.reviews = reviews;
+    this.averageRate = averageRate;
+    this.unrepliedComments = unrepliedComments;
   }
 }

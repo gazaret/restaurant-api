@@ -21,13 +21,4 @@ export class RestaurantCreateParamsDto {
   @IsString()
   @MaxLength(1000)
   description: string;
-
-  @ApiProperty({
-    required: true,
-    type: 'string',
-    name: 'imageData',
-  })
-  @IsNotEmpty()
-  @IsString()
-  imageData: string;
 }

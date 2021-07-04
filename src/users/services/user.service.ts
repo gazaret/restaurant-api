@@ -2,10 +2,19 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Roles } from '../../auth/constants';
 import { UserRepository } from '../repositories/user.repository';
 import { UserEntity } from '../entities/user.entity';
+import { UserPublicDTO } from '../dto/user-public.dto';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
+
+  async getAll(): Promise<UserPublicDTO[]> {
+    const users = await this.userRepository.find();
+
+    return users.map((user) => {
+      return new UserPublicDTO(user.id, user.username, user.role);
+    });
+  }
 
   async findOne(username: string): Promise<UserEntity> {
     return this.userRepository.findOne({ username });
