@@ -40,9 +40,13 @@ export class ReviewEntity {
   @Column({ default: null })
   reply: string;
 
-  @ManyToOne(() => RestaurantEntity, (restaurant) => restaurant.reviews)
+  @ManyToOne(() => RestaurantEntity, (restaurant) => restaurant.reviews, {
+    onDelete: 'CASCADE',
+  })
   restaurant: RestaurantEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.reviews)
+  @ManyToOne(() => UserEntity, (user) => user.reviews, {
+    onDelete: 'CASCADE',
+  })
   user: UserEntity;
 }

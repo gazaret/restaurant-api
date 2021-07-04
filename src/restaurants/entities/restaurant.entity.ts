@@ -47,6 +47,9 @@ export class RestaurantEntity {
   @OneToMany(() => ReviewEntity, (review) => review.restaurant)
   reviews: ReviewEntity[];
 
-  @ManyToOne(() => UserEntity, (user) => user.restaurants, { eager: true })
+  @ManyToOne(() => UserEntity, (user) => user.restaurants, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: UserEntity;
 }
