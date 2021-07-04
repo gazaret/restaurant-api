@@ -9,7 +9,7 @@ import {
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { AuthService } from '../services/auth.service';
-import { PublicDecorator } from '../decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 import {
   SigninParamsDto,
   SignupParamsDto,
@@ -22,7 +22,7 @@ import {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @PublicDecorator()
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   @HttpCode(200)
@@ -31,7 +31,7 @@ export class AuthController {
     return this.authService.signin(req.user);
   }
 
-  @PublicDecorator()
+  @Public()
   @Post('signup')
   @ApiResponse({ type: SignupResponseDto, status: 201 })
   async signup(@Body() signupData: SignupParamsDto) {

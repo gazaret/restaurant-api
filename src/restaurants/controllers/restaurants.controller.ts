@@ -15,6 +15,7 @@ import {
 import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
+import { Public } from '../../auth/decorators/public.decorator';
 import { RestaurantsService } from '../services/restaurants.service';
 import {
   RestaurantCreateParamsDto,
@@ -100,7 +101,7 @@ export class RestaurantsController {
   }
 
   @Get(':id/photo/:idPhoto')
-  @ApiBearerAuth()
+  @Public()
   @ApiResponse({ status: 200 })
   async getPhoto(@Param() params, @Res() res) {
     res.sendFile(params.idPhoto, { root: 'photos' });
